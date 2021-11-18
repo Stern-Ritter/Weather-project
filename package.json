@@ -1,0 +1,19 @@
+{
+  "name": "weather-report",
+  "version": "1.0.0",
+  "description": "Weather report",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stern-Ritter/Weather-project.git"
+  },
+  "author": "Konstantin Fadeev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Stern-Ritter/Weather-project/issues"
+  },
+  "homepage": "https://github.com/Stern-Ritter/Weather-project#readme"
+}
