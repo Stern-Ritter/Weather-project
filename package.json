@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/Stern-Ritter/Weather-project/issues"
   },
-  "homepage": "https://github.com/Stern-Ritter/Weather-project#readme"
+  "homepage": "https://github.com/Stern-Ritter/Weather-project#readme",
+  "devDependencies": {
+    "@types/jest": "^27.0.2",
+    "jest": "^27.3.1"
+  }
 }
