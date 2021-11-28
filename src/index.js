@@ -10,32 +10,85 @@
 // 2. Проверить покрытие кода тестами, и добавить проверку покрытия при запуске test скрипта.
 // Покрытие должно быть не ниже 60%
 
-import { storageHistoryKey } from "./constants";
-import History from "./history";
-import Cards from "./cards";
-import Weather from "./weather";
+import "./index.css";
+import {
+  maxHistoryLength,
+  storageHistoryKey,
+  googleMapsConfig,
+  openWeatherConfig,
+  geoJsConfig,
+} from "./constants";
 
-const weatherSection = document.querySelector(".weather");
-const form = document.forms.weather;
-const nameInput = form.elements.name;
-const map = weatherSection.querySelector(".weather__map");
-const error = weatherSection.querySelector(".weather__error");
-const historyList = weatherSection.querySelector(".weather__history-list");
+import GoogleMapsApi from "./GoogleMapApi";
+import OpenWeatherApi from "./OpenWeatherApi";
+import GeoApi from "./GeoApi";
+import Card from "./Card";
+import Section from "./Section";
+import History from "./History";
+import Form from "./Form";
 
-const history = new History(10, storageHistoryKey);
-const cards = new Cards(10, historyList);
-const weather = new Weather(map, error, history, cards);
+const map = document.querySelector(".weather__map");
+const errorElement = document.querySelector(".weather__error");
 
-form.addEventLitener("submit", (evt) => {
-  evt.preventDefault();
-  weather.getLocationWeather(nameInput.value);
-  evt.target.clear();
+const googleMapsApi = new GoogleMapsApi(googleMapsConfig);
+const openWeatherApi = new OpenWeatherApi(openWeatherConfig);
+const geoApi = new GeoApi(geoJsConfig);
+const history = new History(storageHistoryKey, maxHistoryLength);
+
+function showError(error) {
+  errorElement.textContent = error.message;
+}
+
+function clearError() {
+  errorElement.textContent = "";
+}
+
+const weatherSection = new Section(
+  (item) => {
+    const card = new Card(
+      item,
+      "#weather-history-item",
+      function handleClick() {
+        getLocationWeather({ city: this._element.dataset.city });
+      }
+    );
+    const cardElement = card.generate();
+    weatherSection.addItem(cardElement);
+  },
+  ".weather__history-list",
+  maxHistoryLength
+);
+
+const weatherForm = new Form(".weather__form", function handleSubmit() {
+  getLocationWeather(this._getInputValues());
 });
+weatherForm.setEventListeners();
 
-historyList.addEventListener("click", (evt) => {
-  if (evt.target.classList.includes("weather__history-list-item")) {
-    weather.getLocationWeather(evt.target.dataset.name);
-  }
-});
+function getLocationWeather({ city }) {
+  clearError(errorElement);
+  openWeatherApi
+    .getCurrentWeather(city)
+    .then((data) => {
+      map.src = googleMapsApi.getStaticMap(city);
+      map.alt = city;
+      const temperature = data.main.temp;
+      const { icon } = data.weather[0];
+      history.addElement({ city, temperature, icon });
+      weatherSection.render({ city, temperature, icon });
+    })
+    .catch((err) => showError(errorElement, err));
+}
 
-weather.showWeatherHistory();
+function getCurrentLocationWeather() {
+  clearError(errorElement);
+  geoApi
+    .getCurrentLocation()
+    .then((res) => {
+      getLocationWeather(res);
+    })
+    .catch((err) => showError(errorElement, err));
+}
+
+// Начальная инициализация
+getCurrentLocationWeather();
+weatherSection.renderItems(history.getHistory());

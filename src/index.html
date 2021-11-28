@@ -13,29 +13,28 @@
     <main class="page">
       <section class="weather">
         <img class="weather__map" alt="Карта" />
+        <span class="weather-error"></span>
         <form
           name="weather"
           action="#"
           autocomplete="off"
-          class="weather__form"
-          novalidate
+          class="form weather__form"
         >
           <input
-            class="weather__input"
-            id="name"
-            name="name"
+            class="form__input weather__input"
+            id="city"
+            name="city"
             placeholder="Имя вашего города"
             type="text"
             required
             minlength="2"
             maxlength="30"
           />
-          <span class="name-error weather__input-error"></span>
           <button
             class="weather__button"
             name="acceptBtn"
             type="submit"
-          ></button>
+          >Показать</button>
         </form>
         <p class="weather__error"></p>
         <ul class="weather__history-list"></ul>
@@ -43,7 +42,10 @@
 
       <template id="weather-history-item">
         <li class="weather__history-list-item">
-          <p class="weather__text"></p>
+          <p class="weather__text">
+            <span class="weather__city-name"></span>
+            <span class="weather__temperature"></span>
+          </p>
           <img class="weather__icon" src="#" alt="Иконка погоды">
         </li>
       </template>

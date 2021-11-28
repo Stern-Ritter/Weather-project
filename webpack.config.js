@@ -3,13 +3,13 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
-const {NODE_ENV} = process.env;
+const { NODE_ENV } = process.env;
 
 module.exports = {
   entry: resolve(__dirname, "src/index.js"),
   output: {
     filename: "bundle.js",
-    path: resolve(`${__dirname  }/dist`),
+    path: resolve(__dirname, "/dist"),
     clean: true,
     environment: {
       arrowFunction: false,
@@ -58,7 +58,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: resolve(__dirname, "index.html"),
+      template: resolve(__dirname, "src/index.html"),
     }),
     new MiniCssExtractPlugin(),
   ],

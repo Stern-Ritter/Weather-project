@@ -1,27 +1,30 @@
 export default class History {
-  constructor(maxCount, storageHistoryKey) {
-    this.maxCount = maxCount;
-    this.storageHistoryKey = storageHistoryKey;
-    this.history = this.getHistory();
+  constructor(storageHistoryKey, maxCount) {
+    this._maxCount = maxCount;
+    this._storageHistoryKey = storageHistoryKey;
+    this._history = this.getHistory();
   }
 
   getHistory() {
-    return JSON.parse(localStorage.getItem(this.storageHistoryKey)) ?? [];
+    return JSON.parse(localStorage.getItem(this._storageHistoryKey)) ?? [];
   }
 
-  setHistory() {
-    localStorage.setItem(JSON.stringify(this.history), this.storageHistoryKey);
+  _setHistory() {
+    localStorage.setItem(
+      this._storageHistoryKey,
+      JSON.stringify(this._history)
+    );
   }
 
-  checkHistoryLength() {
-    if (this.history.length > this.maxCount) {
-      this.history = this.history.slice(-10);
+  _checkHistoryLength() {
+    if (this._history.length > this._maxCount) {
+      this._history = this._history.slice(-this._maxCount);
     }
   }
 
-  addHistoryElement(historyElement) {
-    this.history.push(historyElement);
-    this.checkHistoryLength();
-    this.setHistory();
+  addElement(element) {
+    this._history.push(element);
+    this._checkHistoryLength();
+    this._setHistory();
   }
 }
