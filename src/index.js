@@ -24,71 +24,65 @@ import OpenWeatherApi from "./OpenWeatherApi";
 import GeoApi from "./GeoApi";
 import Card from "./Card";
 import Section from "./Section";
+import Image from "./Image";
+import ErrorElement from "./ErrorElement";
 import History from "./History";
 import Form from "./Form";
-
-const map = document.querySelector(".weather__map");
-const errorElement = document.querySelector(".weather__error");
+import { getLocationWeather } from "./utils";
 
 const googleMapsApi = new GoogleMapsApi(googleMapsConfig);
 const openWeatherApi = new OpenWeatherApi(openWeatherConfig);
 const geoApi = new GeoApi(geoJsConfig);
 const history = new History(storageHistoryKey, maxHistoryLength);
-
-function showError(error) {
-  errorElement.textContent = error.message;
-}
-
-function clearError() {
-  errorElement.textContent = "";
-}
-
+const map = new Image(".weather__map");
+const errorElement = new ErrorElement(".weather__error");
 const weatherSection = new Section(
-  (item) => {
-    const card = new Card(
-      item,
-      "#weather-history-item",
-      function handleClick() {
-        getLocationWeather({ city: this._element.dataset.city });
-      }
-    );
-    const cardElement = card.generate();
-    weatherSection.addItem(cardElement);
+  (data) => {
+    const card = new Card(data, "#weather-history-item", () => {
+      getLocationWeather(
+        card.getCity(),
+        openWeatherApi,
+        googleMapsApi,
+        map,
+        history,
+        weatherSection,
+        errorElement
+      );
+    });
+    return card.generate();
   },
   ".weather__history-list",
   maxHistoryLength
 );
 
-const weatherForm = new Form(".weather__form", function handleSubmit() {
-  getLocationWeather(this._getInputValues());
+const weatherForm = new Form(".weather__form", () => {
+  const { city } = weatherForm.getInputValues();
+  getLocationWeather(
+    city,
+    openWeatherApi,
+    googleMapsApi,
+    map,
+    history,
+    weatherSection,
+    errorElement
+  );
 });
 weatherForm.setEventListeners();
 
-function getLocationWeather({ city }) {
-  clearError(errorElement);
-  openWeatherApi
-    .getCurrentWeather(city)
-    .then((data) => {
-      map.src = googleMapsApi.getStaticMap(city);
-      map.alt = city;
-      const temperature = data.main.temp;
-      const { icon } = data.weather[0];
-      history.addElement({ city, temperature, icon });
-      weatherSection.render({ city, temperature, icon });
-    })
-    .catch((err) => showError(errorElement, err));
-}
-
-function getCurrentLocationWeather() {
-  clearError(errorElement);
-  geoApi
-    .getCurrentLocation()
-    .then((res) => {
-      getLocationWeather(res);
-    })
-    .catch((err) => showError(errorElement, err));
-}
-
 // Начальная инициализация
-getCurrentLocationWeather();
+geoApi
+  .getCurrentLocation()
+  .then((data) =>
+    getLocationWeather(
+      data.city,
+      openWeatherApi,
+      googleMapsApi,
+      map,
+      history,
+      weatherSection,
+      errorElement
+    )
+  )
+  .catch((err) => errorElement.showError(err.message));
+
 weatherSection.renderItems(history.getHistory());

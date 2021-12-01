@@ -4,7 +4,7 @@ export default class Form {
     this._handleSubmit = handleSubmit;
   }
 
-  _getInputValues() {
+  getInputValues() {
     this._inputList = this._element.querySelectorAll(".form__input");
     this._formValues = {};
     this._inputList.forEach((input) => {
@@ -16,7 +16,7 @@ export default class Form {
   setEventListeners() {
     this._element.addEventListener("submit", (evt) => {
       evt.preventDefault();
-      this._handleSubmit(this._getInputValues());
+      this._handleSubmit(this.getInputValues());
       this._element.reset();
     });
   }

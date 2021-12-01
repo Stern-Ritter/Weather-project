@@ -7,6 +7,10 @@ export default class Card {
     this._handleClick = handleClick;
   }
 
+  getCity() {
+    return this._city;
+  }
+
   _getElement() {
     const cardElement = document
       .querySelector(this._selector)

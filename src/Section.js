@@ -1,6 +1,6 @@
 export default class Section {
   constructor(render, selector, maxCount) {
-    this.render = render;
+    this._render = render;
     this._container = document.querySelector(selector);
     this._maxCount = maxCount;
   }
@@ -16,13 +16,14 @@ export default class Section {
     }
   }
 
-  renderItems(items) {
-    this._clear();
-    items.forEach((item) => this.render(item));
+  addItem(item) {
+    const cardElement = this._render(item);
+    this._checkCardsCount();
+    this._container.prepend(cardElement);
   }
 
-  addItem(item) {
-    this._checkCardsCount();
-    this._container.prepend(item);
+  renderItems(items) {
+    this._clear();
+    items.forEach((item) => this.addItem(item));
   }
 }
