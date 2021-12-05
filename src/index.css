@@ -1,68 +1,12 @@
-.weather {
-  max-width: 720px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(250px, 1fr) 1fr;
-  grid-template-rows: min-content min-content 1fr;
-  grid-template-areas:
-    "map history"
-    "form history"
-    "error history";
-  gap: 10px;
-}
+@import url(./vendor/sanitize.css);
 
-.weather__map {
-  width: 100%;
-  min-width: 250px;
-  object-fit: contain;
-  object-position: center;
-  grid-area: map;
-}
-
-.weather__error {
-  font-size: 20px;
-  color: red;
-  grid-area: error;
-}
-
-.weather__history-list {
-  min-width: 250px;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  list-style: none;
-  grid-area: history;
-}
-
-.weather__history-list-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid black;
-  cursor: pointer;
-}
-.weather__history-list-item:hover {
-  background-color: gainsboro;
-}
-
-.weather__text {
-  display: flex;
-  flex-direction: column;
-  font-size: 12px;
-  line-height: 1.25;
-}
-
-.weather__icon {
-  height: 50px;
-}
-
-.weather__form {
-  grid-area: form;
-  display: flex;
-}
-
-.weather__input {
-  width: 100%;
-  margin-right: 20px;
-}
+@import url(./blocks/weather/weather.css);
+@import url(./blocks/weather/__map/weather__map.css);
+@import url(./blocks/weather/__error/weather__error.css);
+@import url(./blocks/weather/__history-list/weather__history-list.css);
+@import url(./blocks/weather/__history-list-item/weather__history-list-item.css);
+@import url(./blocks/weather/__text/weather__text.css);
+@import url(./blocks/weather/__icon/weather__icon.css);
+@import url(./blocks/weather/__form/weather__form.css);
+@import url(./blocks/weather/__input/weather__input.css);
+@import url(./blocks/weather/__button/weather__button.css);

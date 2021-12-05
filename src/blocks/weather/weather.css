@@ -1,0 +1,24 @@
+.weather {
+  max-width: 720px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(250px, 1fr) 1fr;
+  grid-template-rows: min-content min-content 1fr;
+  grid-template-areas:
+    "map history"
+    "form history"
+    "error history";
+  gap: 10px;
+}
+
+@media screen and (max-width: 480px) {
+  .weather {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, min-content) 1fr;
+    grid-template-areas:
+      "map"
+      "form"
+      "error"
+      "history";
+  }
+}

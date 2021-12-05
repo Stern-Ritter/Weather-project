@@ -1,0 +1,5 @@
+.weather__error {
+  font-size: 20px;
+  color: red;
+  grid-area: error;
+}

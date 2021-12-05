@@ -17,18 +17,18 @@ import {
   googleMapsConfig,
   openWeatherConfig,
   geoJsConfig,
-} from "./constants";
+} from "./utils/constants";
 
-import GoogleMapsApi from "./GoogleMapApi";
-import OpenWeatherApi from "./OpenWeatherApi";
-import GeoApi from "./GeoApi";
-import Card from "./Card";
-import Section from "./Section";
-import Image from "./Image";
-import ErrorElement from "./ErrorElement";
-import History from "./History";
-import Form from "./Form";
-import { getLocationWeather } from "./utils";
+import GoogleMapsApi from "./components/GoogleMapApi";
+import OpenWeatherApi from "./components/OpenWeatherApi";
+import GeoApi from "./components/GeoApi";
+import Card from "./components/Card";
+import Section from "./components/Section";
+import Image from "./components/Image";
+import ErrorElement from "./components/ErrorElement";
+import History from "./components/History";
+import Form from "./components/Form";
+import { getLocationWeather } from "./utils/utils";
 
 const googleMapsApi = new GoogleMapsApi(googleMapsConfig);
 const openWeatherApi = new OpenWeatherApi(openWeatherConfig);
