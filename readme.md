@@ -2,6 +2,10 @@
 
 ## Описание проекта
 
+![example workflow](https://github.com/github/docs/actions/workflows/coverage.yml/badge.svg)
+![example workflow](https://github.com/github/docs/actions/workflows/sanity-check.yml/badge.svg)
+![example workflow](https://github.com/github/docs/actions/workflows/deploy.yml/badge.svg)
+
 Приложение показывает прогноз погоды в указанном городе, сохраняя 10 последних запросов пользователя.
 
 ## Функциональность проекта
