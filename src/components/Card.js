@@ -20,9 +20,11 @@ export default class Card {
   }
 
   _setEventLiteners() {
-    this._element.addEventListener("click", () => {
-      this._handleClick();
-    });
+    if (this._handleClick) {
+      this._element.addEventListener("click", () => {
+        this._handleClick();
+      });
+    }
   }
 
   generate() {
