@@ -1,0 +1,11 @@
+.weather__history-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.weather__history-list-item:hover {
+  background-color: gainsboro;
+}

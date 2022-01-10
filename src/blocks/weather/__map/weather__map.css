@@ -1,0 +1,6 @@
+.weather__map {
+  width: 100%;
+  object-fit: contain;
+  object-position: center;
+  grid-area: map;
+}
