@@ -38,9 +38,15 @@ const map = new Image(".weather__map");
 const errorElement = new ErrorElement(".weather__error");
 const weatherSection = new Section(
   (data) => {
-    const card = new Card(data, "#weather-history-item", () => {
+    const card = new Card(data, "#weather-history-item");
+    return card.generate();
+  },
+  ".weather__history-list",
+  maxHistoryLength,
+  (evt) => {
+    if (evt.target.classList.contains("weather__history-list-item")) {
       getLocationWeather(
-        card.getCity(),
+        evt.target.dataset.city,
         openWeatherApi,
         googleMapsApi,
         map,
@@ -48,11 +54,8 @@ const weatherSection = new Section(
         weatherSection,
         errorElement
       );
-    });
-    return card.generate();
-  },
-  ".weather__history-list",
-  maxHistoryLength
+    }
+  }
 );
 
 const weatherForm = new Form(".weather__form", () => {

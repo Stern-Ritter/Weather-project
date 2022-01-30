@@ -1,8 +1,16 @@
 export default class Section {
-  constructor(render, selector, maxCount) {
+  constructor(render, selector, maxCount, handleClick) {
     this._render = render;
     this._container = document.querySelector(selector);
     this._maxCount = maxCount;
+    this._handleClick = handleClick;
+    this._setEventLiteners();
+  }
+
+  _setEventLiteners() {
+    this._container.addEventListener("click", (evt) => {
+      this._handleClick(evt);
+    });
   }
 
   _clear() {

@@ -6,14 +6,26 @@ const path = require("path");
 const html = fs.readFileSync(path.resolve(__dirname, "../index.html"), "utf8");
 
 let section;
-const mockCallback = jest.fn().mockImplementation((data) => data);
+const mockRenderCallback = jest.fn().mockImplementation((data) => data);
+const mockHandleCallback = jest.fn();
 const selector = ".weather__history-list";
 const maxLength = 4;
 
 describe("Class Section", () => {
   beforeEach(() => {
     document.documentElement.innerHTML = html;
-    section = new Section(mockCallback, selector, maxLength);
+    section = new Section(
+      mockRenderCallback,
+      selector,
+      maxLength,
+      mockHandleCallback
+    );
+  });
+
+  it(`method _setEventLiteners() create DOM with correct event listeners`, () => {
+    const container = document.querySelector(".weather__history-list");
+    container.dispatchEvent(new Event("click"));
+    expect(mockHandleCallback).toHaveBeenCalledTimes(1);
   });
 
   it(`method addItem(item) calls methods
