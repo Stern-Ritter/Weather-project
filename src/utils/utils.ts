@@ -1,11 +1,18 @@
+import OpenWeatherApi from "../components/OpenWeatherApi";
+import GoogleMapsApi from "../components/GoogleMapApi";
+import Image from "../components/Image";
+import History from "../components/History";
+import Section from "../components/Section";
+import ErrorElement from "../components/ErrorElement";
+
 export async function getLocationWeather(
-  cityName,
-  weatherApi,
-  mapsApi,
-  img,
-  storage,
-  section,
-  error
+  cityName: string,
+  weatherApi: OpenWeatherApi,
+  mapsApi: GoogleMapsApi,
+  img: Image,
+  storage: History,
+  section: Section,
+  error: ErrorElement
 ) {
   error.clearError();
   try {

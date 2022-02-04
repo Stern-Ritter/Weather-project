@@ -1,6 +1,6 @@
 import TemplateEngine from "./templateEngine";
 
-let templateEngine;
+let templateEngine: TemplateEngine;
 
 describe("Class TemplateEngine", () => {
   const data = {
@@ -185,20 +185,22 @@ describe("Class TemplateEngine", () => {
       expect(templateEngine.createDocument(
         `<div class="tags">
         {{for tags as item}}
-        <a class="tag" href="#tag{{item.id}}"> index: {{index}} isFirst: {{isFirst}} isLast: {{isLast}} {{hashtagIcon}}{{item.name}} </a>
+        <a class="tag" href="#tag{{item.id}}">
+        {{index}} {{isFirst}} {{isLast}} {{hashtagIcon}}{{item.name}}
+        </a>
         {{if notIsLast}}, {{endif}}
         {{endfor}}
         </div>`, data))
       .toBe('<div class="tags">' +
-      '<a class="tag" href="#tag1"> index: 0 isFirst: true isLast: false #stephen king </a>,' +
-      '<a class="tag" href="#tag2"> index: 1 isFirst: false isLast: false #man in black </a>,' +
-      '<a class="tag" href="#tag3"> index: 2 isFirst: false isLast: false #lord of the rings </a>,' +
-      '<a class="tag" href="#tag4"> index: 3 isFirst: false isLast: false #years ago </a>,' +
-      '<a class="tag" href="#tag5"> index: 4 isFirst: false isLast: false #across the desert </a>,' +
-      '<a class="tag" href="#tag6"> index: 5 isFirst: false isLast: false #rest of the series </a>,' +
-      '<a class="tag" href="#tag7"> index: 6 isFirst: false isLast: false #science fiction </a>,' +
-      '<a class="tag" href="#tag8"> index: 7 isFirst: false isLast: false #clint eastwood </a>,' +
-      '<a class="tag" href="#tag9"> index: 8 isFirst: false isLast: true #looking forward </a>' +
+      '<a class="tag" href="#tag1">0 true false #stephen king</a>,' +
+      '<a class="tag" href="#tag2">1 false false #man in black</a>,' +
+      '<a class="tag" href="#tag3">2 false false #lord of the rings</a>,' +
+      '<a class="tag" href="#tag4">3 false false #years ago</a>,' +
+      '<a class="tag" href="#tag5">4 false false #across the desert</a>,' +
+      '<a class="tag" href="#tag6">5 false false #rest of the series</a>,' +
+      '<a class="tag" href="#tag7">6 false false #science fiction</a>,' +
+      '<a class="tag" href="#tag8">7 false false #clint eastwood</a>,' +
+      '<a class="tag" href="#tag9">8 false true #looking forward</a>' +
       '</div>');
     });
   });

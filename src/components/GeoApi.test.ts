@@ -1,10 +1,13 @@
+import fetchMock, { enableFetchMocks } from 'jest-fetch-mock';
 import Api from "./Api";
 import GeoApi from "./GeoApi";
 import { geoJsConfig } from "../utils/constants";
 
-require("jest-fetch-mock").enableMocks();
-
 describe("Class GeoApi", () => {
+  beforeAll(() => {
+    enableFetchMocks();
+  });
+
   it("extends class Api", () => {
     const api = new GeoApi(geoJsConfig);
     expect(api).toBeInstanceOf(Api);
@@ -21,14 +24,14 @@ describe("Class GeoApi", () => {
     };
     const init = {
       status: 200,
-      headers: new Headers({
+      headers: {
         "content-type": "application/json",
-      }),
+      },
     };
-    fetch.mockResponseOnce(JSON.stringify(body), init);
+    fetchMock.mockResponseOnce(JSON.stringify(body), init);
     await expect(api.getCurrentLocation()).resolves.toStrictEqual(body);
-    expect(fetch.mock.calls.length).toEqual(1);
-    expect(fetch.mock.calls[0][0]).toEqual(
+    expect(fetchMock.mock.calls.length).toEqual(1);
+    expect(fetchMock.mock.calls[0][0]).toEqual(
       "https://get.geojs.io/v1/ip/geo.json?"
     );
   });

@@ -1,13 +1,11 @@
+import fs from 'fs';
+import path from "path";
 import Card from "./Card";
-
-const fs = require("fs");
-const path = require("path");
 
 const html = fs.readFileSync(path.resolve(__dirname, "../index.html"), "utf8");
 
-const mockCallback = jest.fn();
-let card;
-let element;
+let card: Card;
+let element: HTMLElement;
 
 describe("Class Card", () => {
   beforeEach(() => {
@@ -15,11 +13,10 @@ describe("Class Card", () => {
     card = new Card(
       {
         city: "Евпатория",
-        temperature: 13.33,
+        temperature: "13.33",
         icon: "04n",
       },
-      "#weather-history-item",
-      mockCallback
+      "#weather-history-item"
     );
     element = card.generate();
   });
@@ -39,23 +36,18 @@ describe("Class Card", () => {
   });
 
   it(`method generate() create DOM element with correct data`, () => {
-    const cityElement = element.querySelector(".weather__city-name");
-    const temperatureElement = element.querySelector(".weather__temperature");
-    const iconElement = element.querySelector(".weather__icon");
+    const cityElement = element.querySelector(".weather__city-name") as HTMLElement;
+    const temperatureElement = element.querySelector(".weather__temperature") as HTMLElement;
+    const iconElement = element.querySelector(".weather__icon") as HTMLImageElement;
 
-    expect(cityElement.textContent).toBe(`Город: ${card._city}`);
+    expect(cityElement.textContent).toBe(`Город: ${card.getCity()}`);
     expect(temperatureElement.textContent).toBe(
-      `Температура: ${Math.round(card._temperature)} \u2103`
+      `Температура: ${Math.round(Number(card.getTemperature()))} \u2103`
     );
     expect(iconElement.src).toBe(
-      `https://openweathermap.org/img/wn/${card._icon}@2x.png`
+      `https://openweathermap.org/img/wn/${card.getIcon()}@2x.png`
     );
-    expect(iconElement.alt).toBe(card._city);
-    expect(element.dataset.city).toBe(card._city);
-  });
-
-  it(`method _setEventLiteners() create DOM with correct event listeners`, () => {
-    element.click();
-    expect(mockCallback).toHaveBeenCalledTimes(1);
+    expect(iconElement.alt).toBe(card.getCity());
+    expect(element.dataset.city).toBe(card.getCity());
   });
 });

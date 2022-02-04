@@ -26,6 +26,21 @@ module.exports = {
     "import/no-unresolved": "off",
     "import/extensions": ["warn", "never"],
     "import/prefer-default-export": "off",
+    "lines-between-class-members": [
+      "error",
+      "always",
+      { exceptAfterSingleLine: true },
+    ],
+    "max-classes-per-file": "off",
+    "class-methods-use-this": ["error", { exceptMethods: ["render"] }],
+    "import/no-extraneous-dependencies": [
+      "error",
+      { devDependencies: ["**/*.test.ts", "**/*.test.js"] },
+    ],
+    "@typescript-eslint/ban-ts-comment": [
+      "error",
+      { "ts-ignore": "allow-with-description" },
+    ],
     "no-underscore-dangle": "off",
     "no-param-reassign": ["error", { props: false }],
     "max-len": [

@@ -11,12 +11,12 @@ describe("Class Form", () => {
     </form>`;
   });
 
-  it(`method _getInputValues correct collects input field values`, () => {
+  it(`method getInputValues correct collects input field values`, () => {
     const expectedObj = {
       first: "firstValue",
       second: "secondValue",
     };
-    const form = new Form(`.${selector}`, () => {});
+    const form = new Form(`.${selector}`, () => undefined);
     expect(form.getInputValues()).toStrictEqual(expectedObj);
   });
 
@@ -28,7 +28,8 @@ describe("Class Form", () => {
     const mockCallback = jest.fn();
     const form = new Form(`.${selector}`, mockCallback);
     form.setEventListeners();
-    document.forms.weather.submit();
+    const elementForm = document.querySelector(`.${selector}`) as HTMLFormElement;
+    elementForm.submit();
 
     expect(mockCallback).toBeCalledTimes(1);
     expect(mockCallback).toBeCalledWith(expectedObj);

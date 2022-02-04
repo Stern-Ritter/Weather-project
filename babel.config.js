@@ -3,7 +3,6 @@ module.exports = (api) => ({
   presets: [
     [
       "@babel/preset-env",
-      "@babel/preset-typescript",
       {
         useBuiltIns: "entry",
         corejs: 3,
@@ -12,5 +11,6 @@ module.exports = (api) => ({
           : { chrome: "58", ie: "11" },
       },
     ],
+    "@babel/preset-typescript",
   ],
 });
