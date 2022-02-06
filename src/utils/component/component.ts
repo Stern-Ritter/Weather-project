@@ -7,11 +7,8 @@ export default abstract class Component<State = Record<string, unknown>> {
 
   constructor(element: HTMLElement, initialState?: Partial<State>) {
     this.element = element;
-    if(initialState) { this.state = {...this.state, ...initialState} }
-    setTimeout(() => {
-      this.element.innerHTML = this.render();
-      this.subscribeToEvents();
-    }, 0);
+    this.state = {...this.state, ...initialState};
+    this.onMount(this.element);
   }
 
   abstract render(): string;
@@ -26,11 +23,16 @@ export default abstract class Component<State = Record<string, unknown>> {
     });
   }
 
+  onMount(element: HTMLElement): void {
+    setTimeout(() => {
+      element.innerHTML = this.render();
+      this.subscribeToEvents();
+    }, 0);
+  }
+
   setState(state: any): void {
     this.state = { ...this.state, ...state };
     this.element.innerHTML = this.render();
     this.subscribeToEvents();
   }
-
-  // onMount(el: HTMLElement): void {}
 }

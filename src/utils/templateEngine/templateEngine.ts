@@ -1,14 +1,14 @@
 export default class TemplateEngine {
-  public loopRegExp: RegExp;
-  public loopItemRegExp: (alias: string) => RegExp;
-  public conditionRegExp: RegExp;
-  public placeholderRegExp: RegExp;
+  private loopRegExp: RegExp;
+  private loopItemRegExp: (alias: string) => RegExp;
+  private conditionRegExp: RegExp;
+  private placeholderRegExp: RegExp;
 
   constructor() {
     this.loopRegExp = /{{for\s(\w+)\sas\s(\w+)}}([\s\S]+?(?={{endfor}}))/g;
     this.loopItemRegExp = (alias) => new RegExp(`{{${alias}\\.(\\w+)}}`, 'g');
     this.conditionRegExp = /{{if\s(\w+)}}\s*(\S+)\s*{{endif}}/g;
-    this.placeholderRegExp =  /{{(\w+)}}/g;
+    this.placeholderRegExp = /{{(\w+)}}/g;
   }
 
   static getLoopVariables = (idx: number, arr: any[]): Record<string, any> => ({
