@@ -15,7 +15,7 @@ import {
 } from "./constants";
 import { getLocationWeather } from "./utils";
 
-const html = fs.readFileSync(path.resolve(__dirname, "../index.html"), "utf8");
+const html = fs.readFileSync(path.resolve(__dirname, "../prev-index.html"), "utf8");
 
 const imageSelector = ".weather__map";
 const cardTemplateSelector = "#weather-history-item";

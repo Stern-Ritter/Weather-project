@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from "path";
 import Section from "./Section";
 
-const html = fs.readFileSync(path.resolve(__dirname, "../index.html"), "utf8");
+const html = fs.readFileSync(path.resolve(__dirname, "../prev-index.html"), "utf8");
 
 let section: Section;
 const mockRenderCallback = jest.fn().mockImplementation((data) => data);

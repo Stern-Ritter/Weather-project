@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from "path";
 import Card from "./Card";
 
-const html = fs.readFileSync(path.resolve(__dirname, "../index.html"), "utf8");
+const html = fs.readFileSync(path.resolve(__dirname, "../prev-index.html"), "utf8");
 
 let card: Card;
 let element: HTMLElement;

@@ -1,7 +1,5 @@
 import TemplateEngine from "./templateEngine";
 
-let templateEngine: TemplateEngine;
-
 describe("Class TemplateEngine", () => {
   const data = {
     title: "The Dark Tower: The Gunslinger",
@@ -30,178 +28,191 @@ describe("Class TemplateEngine", () => {
     ]
   };
 
-  beforeAll(() => {
-    templateEngine = new TemplateEngine();
-  });
-
   describe("basic data placing", () => {
     it("puts data into placeholders", () => {
-      expect(templateEngine.createDocument(`<h2>{{title}}</h2>`, data))
+      expect(TemplateEngine.createDocument(`<h2>{{title}}</h2>`, data))
       .toBe("<h2>The Dark Tower: The Gunslinger</h2>");
     });
 
     it("puts empty string into placeholders in no data provided", () => {
-      expect(templateEngine.createDocument(
-        `<h2>{{title}}</h2>
-        <h3>{{volume}}</h3>`, data))
+      expect(TemplateEngine.createDocument(
+        '<h2>{{title}}</h2>\n' +
+        '<h3>{{volume}}</h3>\n', data))
       .toBe(
-        '<h2>The Dark Tower: The Gunslinger</h2>' +
-        '<h3></h3>');
+        '<h2>The Dark Tower: The Gunslinger</h2>\n' +
+        '<h3></h3>\n');
     });
 
     it("replaces all placeholders", () => {
-      expect(templateEngine.createDocument(
-        `<h2>{{title}}</h2>
-        <h3>{{volume}}</h3>
-        <h4>{{author}}</h4>`, data))
+      expect(TemplateEngine.createDocument(
+        '<h2>{{title}}</h2>\n'+
+        '<h3>{{volume}}</h3>\n' +
+        '<h4>{{author}}</h4>\n', data))
       .toBe(
-        '<h2>The Dark Tower: The Gunslinger</h2>' +
-        '<h3></h3>' +
-        '<h4>Stephen King</h4>'
+        '<h2>The Dark Tower: The Gunslinger</h2>\n' +
+        '<h3></h3>\n' +
+        '<h4>Stephen King</h4>\n'
       );
     });
   });
 
   describe("conditional rendering", () => {
     it("puts content if the condition is true", () => {
-      expect(templateEngine.createDocument(
-        `<h2>{{title}}</h2>
-        {{if author}}
-        <h3>{{author}}</h3>
-        {{endif}}`, data))
+      expect(TemplateEngine.createDocument(
+        '<h2>{{title}}</h2>\n' +
+        '{{if author}}\n' +
+        '<h3>{{author}}</h3>\n' +
+        '{{endif}}\n', data))
       .toBe(
-        '<h2>The Dark Tower: The Gunslinger</h2>' +
-        '<h3>Stephen King</h3>');
+        '<h2>The Dark Tower: The Gunslinger</h2>\n' +
+        '<h3>Stephen King</h3>\n');
     });
 
     it("puts empty string if the condition is false", () => {
-      expect(templateEngine.createDocument(
-        `<h2>{{title}}</h2>
-        {{if volume}}
-        <h3>{{volume}}</h3>
-        {{endif}}`, data))
-      .toBe(`<h2>The Dark Tower: The Gunslinger</h2>`);
+      expect(TemplateEngine.createDocument(
+        '<h2>{{title}}</h2>\n' +
+        '{{if volume}}\n' +
+        '<h3>{{volume}}</h3>\n' +
+        '{{endif}}\n', data))
+      .toBe('<h2>The Dark Tower: The Gunslinger</h2>\n');
     });
 
     it("replaces all conditional blocks", () => {
-      expect(templateEngine.createDocument(
-        `{{if title}}
-        <h2>{{title}}</h2>
-        {{endif}}
-        {{if volume}}
-        <h3>{{volume}}</h3>
-        {{endif}}
-        {{if author}}
-        <h4>{{author}}</h4>
-        {{endif}}`, data))
+      expect(TemplateEngine.createDocument(
+        '{{if title}}\n' +
+        '<h2>{{title}}</h2>\n' +
+        '{{endif}}\n' +
+        '{{if volume}}\n' +
+        '<h3>{{volume}}</h3>\n' +
+        '{{endif}}\n' +
+        '{{if author}}\n' +
+        '<h4>{{author}}</h4>\n' +
+        '{{endif}}\n', data))
       .toBe(
-        '<h2>The Dark Tower: The Gunslinger</h2>' +
-        '<h4>Stephen King</h4>'
+        '<h2>The Dark Tower: The Gunslinger</h2>\n' +
+        '<h4>Stephen King</h4>\n'
       );
     });
   });
 
   describe("loops", () => {
     it("put values from list elements inside loop", () => {
-      expect(templateEngine.createDocument(
-        `<div class="tags">
-        {{for tags as item}}
-        <a class="tag" href="#tag{{item.id}}"> {{item.name}} </a>
-        {{endfor}}
-        </div>`, data))
-      .toBe('<div class="tags">' +
-      '<a class="tag" href="#tag1"> stephen king </a>' +
-      '<a class="tag" href="#tag2"> man in black </a>' +
-      '<a class="tag" href="#tag3"> lord of the rings </a>' +
-      '<a class="tag" href="#tag4"> years ago </a>' +
-      '<a class="tag" href="#tag5"> across the desert </a>' +
-      '<a class="tag" href="#tag6"> rest of the series </a>' +
-      '<a class="tag" href="#tag7"> science fiction </a>' +
-      '<a class="tag" href="#tag8"> clint eastwood </a>' +
-      '<a class="tag" href="#tag9"> looking forward </a>' +
-      '</div>');
+      expect(TemplateEngine.createDocument(
+        '<div class="tags">\n' +
+        '{{for tags as item}}\n' +
+        '<a class="tag" href="#tag{{item.id}}"> {{item.name}} </a>\n' +
+        '{{endfor}}\n' +
+        '</div>\n', data))
+      .toBe('<div class="tags">\n' +
+      '<a class="tag" href="#tag1"> stephen king </a>\n' +
+      '<a class="tag" href="#tag2"> man in black </a>\n' +
+      '<a class="tag" href="#tag3"> lord of the rings </a>\n' +
+      '<a class="tag" href="#tag4"> years ago </a>\n' +
+      '<a class="tag" href="#tag5"> across the desert </a>\n' +
+      '<a class="tag" href="#tag6"> rest of the series </a>\n' +
+      '<a class="tag" href="#tag7"> science fiction </a>\n' +
+      '<a class="tag" href="#tag8"> clint eastwood </a>\n' +
+      '<a class="tag" href="#tag9"> looking forward </a>\n' +
+      '</div>\n');
     });
 
     it("support basic data placing", () => {
-      expect(templateEngine.createDocument(
-        `<div class="tags">
-        {{for tags as item}}
-        <a class="tag" href="#tag{{item.id}}"> {{hashtagIcon}}{{item.name}} </a>
-        {{endfor}}
-        </div>`, data))
-      .toBe('<div class="tags">' +
-      '<a class="tag" href="#tag1"> #stephen king </a>' +
-      '<a class="tag" href="#tag2"> #man in black </a>' +
-      '<a class="tag" href="#tag3"> #lord of the rings </a>' +
-      '<a class="tag" href="#tag4"> #years ago </a>' +
-      '<a class="tag" href="#tag5"> #across the desert </a>' +
-      '<a class="tag" href="#tag6"> #rest of the series </a>' +
-      '<a class="tag" href="#tag7"> #science fiction </a>' +
-      '<a class="tag" href="#tag8"> #clint eastwood </a>' +
-      '<a class="tag" href="#tag9"> #looking forward </a>' +
-      '</div>');
+      expect(TemplateEngine.createDocument(
+        '<div class="tags">\n' +
+        '{{for tags as item}}\n' +
+        '<a class="tag" href="#tag{{item.id}}"> {{hashtagIcon}}{{item.name}} </a>\n' +
+        '{{endfor}}\n' +
+        '</div>\n', data))
+      .toBe('<div class="tags">\n' +
+      '<a class="tag" href="#tag1"> #stephen king </a>\n' +
+      '<a class="tag" href="#tag2"> #man in black </a>\n' +
+      '<a class="tag" href="#tag3"> #lord of the rings </a>\n' +
+      '<a class="tag" href="#tag4"> #years ago </a>\n' +
+      '<a class="tag" href="#tag5"> #across the desert </a>\n' +
+      '<a class="tag" href="#tag6"> #rest of the series </a>\n' +
+      '<a class="tag" href="#tag7"> #science fiction </a>\n' +
+      '<a class="tag" href="#tag8"> #clint eastwood </a>\n' +
+      '<a class="tag" href="#tag9"> #looking forward </a>\n' +
+      '</div>\n');
     });
 
     it("support multiplie loops", () => {
-      expect(templateEngine.createDocument(
-        `<div class="tags">
-          <ul>
-            {{for tags as item}}
-              <li><a class="tag" href="#tag{{item.id}}"> {{item.name}} </a></li>
-            {{endfor}}
-          </ul>
-          <ul>
-            {{for bookSeries as item}}
-              <li><a class="tag" href="#tag{{item.id}}"> {{item.title}} </a></li>
-            {{endfor}}
-          </ul>
-        </div>`, data))
-      .toBe('<div class="tags">' +
-      '<ul>' +
-      '<li><a class="tag" href="#tag1"> stephen king </a></li>' +
-      '<li><a class="tag" href="#tag2"> man in black </a></li>' +
-      '<li><a class="tag" href="#tag3"> lord of the rings </a></li>' +
-      '<li><a class="tag" href="#tag4"> years ago </a></li>' +
-      '<li><a class="tag" href="#tag5"> across the desert </a></li>' +
-      '<li><a class="tag" href="#tag6"> rest of the series </a></li>' +
-      '<li><a class="tag" href="#tag7"> science fiction </a></li>' +
-      '<li><a class="tag" href="#tag8"> clint eastwood </a></li>' +
-      '<li><a class="tag" href="#tag9"> looking forward </a></li>' +
-      '</ul>' +
-      '<ul>' +
-      '<li><a class="tag" href="#tag1"> The Gunslinger </a></li>' +
-      '<li><a class="tag" href="#tag2"> The Drawing of the Three </a></li>' +
-      '<li><a class="tag" href="#tag3"> The Waste Lands </a></li>' +
-      '<li><a class="tag" href="#tag4"> Wizard and Glass </a></li>' +
-      '<li><a class="tag" href="#tag5"> The Wind Through the Keyhole </a></li>' +
-      '<li><a class="tag" href="#tag6"> Wolves of the Calla </a></li>' +
-      '<li><a class="tag" href="#tag7"> Song of Susannah </a></li>' +
-      '<li><a class="tag" href="#tag8"> The Dark Tower </a></li>' +
-      '</ul>' +
-      '</div>');
+      expect(TemplateEngine.createDocument(
+        '<div class="tags">\n' +
+        '<ul>\n' +
+        '{{for tags as item}}\n' +
+        '<li><a class="tag" href="#tag{{item.id}}"> {{item.name}} </a></li>\n' +
+        '{{endfor}}\n' +
+        '</ul>\n' +
+        '<ul>\n' +
+        '{{for bookSeries as item}}\n' +
+        '<li><a class="tag" href="#tag{{item.id}}"> {{item.title}} </a></li>\n' +
+        '{{endfor}}\n' +
+        '</ul>\n' +
+        '</div>\n', data))
+      .toBe('<div class="tags">\n' +
+      '<ul>\n' +
+      '<li><a class="tag" href="#tag1"> stephen king </a></li>\n' +
+      '<li><a class="tag" href="#tag2"> man in black </a></li>\n' +
+      '<li><a class="tag" href="#tag3"> lord of the rings </a></li>\n' +
+      '<li><a class="tag" href="#tag4"> years ago </a></li>\n' +
+      '<li><a class="tag" href="#tag5"> across the desert </a></li>\n' +
+      '<li><a class="tag" href="#tag6"> rest of the series </a></li>\n' +
+      '<li><a class="tag" href="#tag7"> science fiction </a></li>\n' +
+      '<li><a class="tag" href="#tag8"> clint eastwood </a></li>\n' +
+      '<li><a class="tag" href="#tag9"> looking forward </a></li>\n' +
+      '</ul>\n' +
+      '<ul>\n' +
+      '<li><a class="tag" href="#tag1"> The Gunslinger </a></li>\n' +
+      '<li><a class="tag" href="#tag2"> The Drawing of the Three </a></li>\n' +
+      '<li><a class="tag" href="#tag3"> The Waste Lands </a></li>\n' +
+      '<li><a class="tag" href="#tag4"> Wizard and Glass </a></li>\n' +
+      '<li><a class="tag" href="#tag5"> The Wind Through the Keyhole </a></li>\n' +
+      '<li><a class="tag" href="#tag6"> Wolves of the Calla </a></li>\n' +
+      '<li><a class="tag" href="#tag7"> Song of Susannah </a></li>\n' +
+      '<li><a class="tag" href="#tag8"> The Dark Tower </a></li>\n' +
+      '</ul>\n' +
+      '</div>\n');
     });
 
     it("support additional loop variables", () => {
-      expect(templateEngine.createDocument(
-        `<div class="tags">
-        {{for tags as item}}
-        <a class="tag" href="#tag{{item.id}}">
-        {{index}} {{isFirst}} {{isLast}} {{hashtagIcon}}{{item.name}}
-        </a>
-        {{if notIsLast}}, {{endif}}
-        {{endfor}}
-        </div>`, data))
-      .toBe('<div class="tags">' +
-      '<a class="tag" href="#tag1">0 true false #stephen king</a>,' +
-      '<a class="tag" href="#tag2">1 false false #man in black</a>,' +
-      '<a class="tag" href="#tag3">2 false false #lord of the rings</a>,' +
-      '<a class="tag" href="#tag4">3 false false #years ago</a>,' +
-      '<a class="tag" href="#tag5">4 false false #across the desert</a>,' +
-      '<a class="tag" href="#tag6">5 false false #rest of the series</a>,' +
-      '<a class="tag" href="#tag7">6 false false #science fiction</a>,' +
-      '<a class="tag" href="#tag8">7 false false #clint eastwood</a>,' +
-      '<a class="tag" href="#tag9">8 false true #looking forward</a>' +
-      '</div>');
+      expect(TemplateEngine.createDocument(
+        '<div class="tags">\n' +
+        '{{for tags as item}}\n' +
+        '<a class="tag" href="#tag{{item.id}}">\n' +
+        '{{index}} {{isFirst}} {{isLast}} {{hashtagIcon}}{{item.name}}\n' +
+        '</a>{{if notIsLast}}, {{endif}}\n' +
+        '{{endfor}}\n' +
+        '</div>\n', data))
+      .toBe('<div class="tags">\n' +
+      '<a class="tag" href="#tag1">\n' +
+        '0 true false #stephen king\n'+
+      '</a>,\n' +
+      '<a class="tag" href="#tag2">\n' +
+        '1 false false #man in black\n'+
+      '</a>,\n' +
+      '<a class="tag" href="#tag3">\n' +
+        '2 false false #lord of the rings\n'+
+      '</a>,\n' +
+      '<a class="tag" href="#tag4">\n' +
+        '3 false false #years ago\n'+
+      '</a>,\n' +
+      '<a class="tag" href="#tag5">\n' +
+        '4 false false #across the desert\n'+
+      '</a>,\n' +
+      '<a class="tag" href="#tag6">\n' +
+        '5 false false #rest of the series\n'+
+      '</a>,\n' +
+      '<a class="tag" href="#tag7">\n' +
+        '6 false false #science fiction\n'+
+      '</a>,\n' +
+      '<a class="tag" href="#tag8">\n' +
+        '7 false false #clint eastwood\n'+
+      '</a>,\n' +
+      '<a class="tag" href="#tag9">\n' +
+        '8 false true #looking forward\n'+
+      '</a>\n' +
+      '</div>\n');
     });
   });
 });

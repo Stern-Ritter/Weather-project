@@ -1,15 +1,8 @@
 export default class TemplateEngine {
-  private loopRegExp: RegExp;
-  private loopItemRegExp: (alias: string) => RegExp;
-  private conditionRegExp: RegExp;
-  private placeholderRegExp: RegExp;
-
-  constructor() {
-    this.loopRegExp = /{{for\s(\w+)\sas\s(\w+)}}([\s\S]+?(?={{endfor}}))/g;
-    this.loopItemRegExp = (alias) => new RegExp(`{{${alias}\\.(\\w+)}}`, 'g');
-    this.conditionRegExp = /{{if\s(\w+)}}\s*(\S+)\s*{{endif}}/g;
-    this.placeholderRegExp = /{{(\w+)}}/g;
-  }
+  private static loopRegExp = /{{for\s(\w+)\sas\s(\w+)}}([\s\S]+?(?={{endfor}}))/g;
+  private static loopItemRegExp = (alias: string) => new RegExp(`{{${alias}\\.(\\w+)}}`, 'g');
+  private static conditionRegExp = /{{if\s(\w+)}}\s*(\S+)\s*{{endif}}/g;
+  private static placeholderRegExp = /{{(\w+)}}/g;
 
   static getLoopVariables = (idx: number, arr: any[]): Record<string, any> => ({
     index: idx,
@@ -19,12 +12,12 @@ export default class TemplateEngine {
     notIsLast: idx !== arr.length - 1
   });
 
-  createDocument(document: string, data: Record<string, any>) {
+  static createDocument(document: string, data: Record<string, any>) {
     return document
     .replace(this.loopRegExp,
       (overlap: string, collection: string, alias: string, template: string) =>
         data[collection]
-        .reduce((
+        ?.reduce((
             str: string,
             item: Record<string, any>,
             idx: number,
@@ -48,6 +41,6 @@ export default class TemplateEngine {
     )
     .replace(this.conditionRegExp, (match, condition, content) => data[condition] ? content : '')
     .replace(this.placeholderRegExp, (match, prop) => data[prop] || '')
-    .split('\n').map((str) => str.trim()).join('')
+    .replace(/\n{2,}/g,'\n')
   }
 }
