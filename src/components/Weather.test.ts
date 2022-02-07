@@ -1,5 +1,5 @@
-import { Weather } from "./Weather";
 import fetchMock, { enableFetchMocks } from 'jest-fetch-mock';
+import { Weather } from "./Weather";
 
 let weatherComponent: Weather;
 const imageSelector = ".weather__map";
