@@ -1,15 +1,15 @@
-import Component from "./utils/component/Component";
-import GoogleMapsApi from "./components/GoogleMapApi";
-import OpenWeatherApi from "./components/OpenWeatherApi";
-import GeoApi from "./components/GeoApi";
-import History from "./components/History";
+import Component from "../utils/component/Component";
+import GoogleMapsApi from "./GoogleMapApi";
+import OpenWeatherApi from "./OpenWeatherApi";
+import GeoApi from "./GeoApi";
+import History from "./History";
 import {
   maxHistoryLength,
   storageHistoryKey,
   googleMapsConfig,
   openWeatherConfig,
   geoJsConfig,
-} from "./utils/constants";
+} from "../utils/constants";
 
 type HistoryElement = {
   city: string,
@@ -25,10 +25,10 @@ type State = {
 };
 
 export class Weather extends Component<State> {
-  private openWeatherApi: OpenWeatherApi;
-  private googleMapsApi: GoogleMapsApi;
-  private geoApi: GeoApi;
-  private history: History;
+  openWeatherApi: OpenWeatherApi;
+  googleMapsApi: GoogleMapsApi;
+  geoApi: GeoApi;
+  history: History;
 
   state: State = {
     city: 'Карта',
