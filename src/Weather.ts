@@ -1,4 +1,4 @@
-import Component from "./utils/component/component";
+import Component from "./utils/component/Component";
 import GoogleMapsApi from "./components/GoogleMapApi";
 import OpenWeatherApi from "./components/OpenWeatherApi";
 import GeoApi from "./components/GeoApi";
