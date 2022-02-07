@@ -68,4 +68,4 @@ export declare class Component<State = {}> {
 
 **Github-pages**
 
-- [Ссылка на github-pages.](https://stern-ritter.github.io/Weather-project/)
+- [Ссылка на github-pages.](https://stern-ritter.github.io/weather-project/)
