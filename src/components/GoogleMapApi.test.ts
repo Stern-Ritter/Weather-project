@@ -4,7 +4,7 @@ import { googleMapsConfig } from "../utils/constants";
 
 describe("Class GoogleMapsApi", () => {
   it("extends class Api", () => {
-    const api = new GoogleMapsApi("https://test.com/api");
+    const api = new GoogleMapsApi(googleMapsConfig);
     expect(api).toBeInstanceOf(Api);
   });
 

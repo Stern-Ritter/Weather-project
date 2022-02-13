@@ -1,3 +1,6 @@
+import fetchMock, { enableFetchMocks } from 'jest-fetch-mock';
+import fs from 'fs';
+import path from "path";
 import OpenWeatherApi from "../components/OpenWeatherApi";
 import GoogleMapApi from "../components/GoogleMapApi";
 import Card from "../components/Card";
@@ -12,12 +15,7 @@ import {
 } from "./constants";
 import { getLocationWeather } from "./utils";
 
-require("jest-fetch-mock").enableMocks();
-
-const fs = require("fs");
-const path = require("path");
-
-const html = fs.readFileSync(path.resolve(__dirname, "../index.html"), "utf8");
+const html = fs.readFileSync(path.resolve(__dirname, "../prev-index.html"), "utf8");
 
 const imageSelector = ".weather__map";
 const cardTemplateSelector = "#weather-history-item";
@@ -31,9 +29,9 @@ const maxHistoryLength = 3;
 
 const init = {
   status: 200,
-  headers: new Headers({
+  headers: {
     "content-type": "application/json",
-  }),
+  },
 };
 const bodies = [
   {
@@ -59,22 +57,24 @@ const bodies = [
 ];
 const expected = bodies.slice(-maxHistoryLength);
 
-let weatherApi;
-let mapsApi;
-let map;
-let storage;
-let section;
-let error;
-let weatherApiSpy;
-let mapsApiSpy;
-let mapSpy;
-let storageSpy;
-let sectionSpy;
-let errorClearSpy;
-let errorShowSpy;
+let weatherApi: OpenWeatherApi;
+let mapsApi: GoogleMapApi;
+let map: Image;
+let storage: History;
+let section: Section;
+let error: ErrorElement;
+let weatherApiSpy: jest.SpyInstance;
+let mapsApiSpy: jest.SpyInstance;
+let mapSpy: jest.SpyInstance;
+let storageSpy: jest.SpyInstance;
+let sectionSpy: jest.SpyInstance;
+let errorClearSpy: jest.SpyInstance;
+let errorShowSpy: jest.SpyInstance;
 
 describe("Function getLocationWeather()", () => {
   beforeAll(() => {
+    enableFetchMocks();
+
     document.documentElement.innerHTML = html;
 
     weatherApi = new OpenWeatherApi(openWeatherConfig);
@@ -84,9 +84,16 @@ describe("Function getLocationWeather()", () => {
     error = new ErrorElement(errorElementSelector);
     section = new Section(
       (data) => {
-        const card = new Card(data, cardTemplateSelector, () => {
+        const card = new Card(data, cardTemplateSelector);
+        return card.generate();
+      },
+      cardContainerSelector,
+      maxHistoryLength,
+      (evt) => {
+        const element = evt.target as HTMLElement;
+        if (element.classList.contains("weather__history-list-item")) {
           getLocationWeather(
-            card.getCity(),
+            element.dataset.city || '',
             weatherApi,
             mapsApi,
             map,
@@ -94,11 +101,8 @@ describe("Function getLocationWeather()", () => {
             section,
             error
           );
-        });
-        return card.generate();
-      },
-      cardContainerSelector,
-      maxHistoryLength
+        }
+      }
     );
 
     weatherApiSpy = jest.spyOn(weatherApi, "getCurrentWeather");
@@ -112,7 +116,7 @@ describe("Function getLocationWeather()", () => {
 
   beforeEach(() => {
     bodies.forEach(async (body) => {
-      fetch.mockResponseOnce(JSON.stringify(body), init);
+      fetchMock.mockResponseOnce(JSON.stringify(body), init);
       await getLocationWeather(
         body.name,
         weatherApi,
@@ -137,7 +141,7 @@ describe("Function getLocationWeather()", () => {
   });
 
   it("correct fills map element with the data", async () => {
-    const mapElement = document.querySelector(imageSelector);
+    const mapElement = document.querySelector(imageSelector) as HTMLImageElement;
     expect(mapElement.alt).toBe(expected[expected.length - 1].name);
     expect(mapElement.src).toBe(
       "https://maps.googleapis.com/maps/api/staticmap" +
@@ -157,15 +161,16 @@ describe("Function getLocationWeather()", () => {
   });
 
   it("correct fills cards container with the data", async () => {
-    const cardContainerElement = document.querySelector(cardContainerSelector);
-    const cards = cardContainerElement.querySelectorAll(cardElementSelector);
+    const cardContainerElement = document.querySelector(cardContainerSelector) as HTMLElement;
+    const cards = cardContainerElement
+      .querySelectorAll(cardElementSelector) as NodeListOf<HTMLElement>;
 
     expect(cards.length).toBe(maxHistoryLength);
 
     cards.forEach((card, index) => {
-      const cityName = card.querySelector(cityElementSelector).textContent;
-      const temperature = card.querySelector(tempElementSelector).textContent;
-      const icon = card.querySelector(iconElementSelector);
+      const cityName = (card.querySelector(cityElementSelector) as HTMLElement).textContent;
+      const temperature = (card.querySelector(tempElementSelector) as HTMLElement).textContent;
+      const icon = card.querySelector(iconElementSelector) as HTMLImageElement;
       const currIndex = expected.length - 1 - index;
 
       expect(cityName).toBe(`Город: ${expected[currIndex].name}`);

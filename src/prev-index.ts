@@ -44,9 +44,10 @@ const weatherSection = new Section(
   ".weather__history-list",
   maxHistoryLength,
   (evt) => {
-    if (evt.target.classList.contains("weather__history-list-item")) {
+    const element = evt.target as HTMLElement;
+    if (element.classList.contains("weather__history-list-item")) {
       getLocationWeather(
-        evt.target.dataset.city,
+        element.dataset.city || '',
         openWeatherApi,
         googleMapsApi,
         map,

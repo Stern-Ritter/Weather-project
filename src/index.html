@@ -10,44 +10,7 @@
   </head>
   <body>
     <main class="page">
-      <section class="weather">
-        <img class="weather__map" alt="Карта" />
-        <span class="weather-error"></span>
-        <form
-          name="weather"
-          action="#"
-          autocomplete="off"
-          class="form weather__form"
-        >
-          <input
-            class="form__input weather__input"
-            id="city"
-            name="city"
-            placeholder="Имя вашего города"
-            type="text"
-            required
-            minlength="2"
-            maxlength="30"
-          />
-          <button
-            class="weather__button"
-            name="acceptBtn"
-            type="submit"
-          >Показать</button>
-        </form>
-        <p class="weather__error"></p>
-        <ul class="weather__history-list"></ul>
-      </section>
-
-      <template id="weather-history-item">
-        <li class="weather__history-list-item">
-          <p class="weather__text">
-            <span class="weather__city-name"></span>
-            <span class="weather__temperature"></span>
-          </p>
-          <img class="weather__icon" src="#" alt="Иконка погоды">
-        </li>
-      </template>
+      <section class="weather"></section>
     </main>
   </body>
 </html>

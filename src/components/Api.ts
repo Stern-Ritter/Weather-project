@@ -1,13 +1,16 @@
 export default class Api {
-  constructor({ baseUrl, params }) {
-    this._baseUrl = baseUrl;
-    this._staticParams = params;
+  private baseUrl: string;
+  private staticParams: Record<string, any>;
+
+  constructor({ baseUrl, params }: Record<string, any>) {
+    this.baseUrl = baseUrl;
+    this.staticParams = params;
   }
 
-  _getUrl(variableParams) {
+  getUrl(variableParams?: Record<string, any>) {
     const searchParams = new URLSearchParams();
-    if (this._staticParams) {
-      Object.entries(this._staticParams).forEach(([key, value]) => {
+    if (this.staticParams) {
+      Object.entries(this.staticParams).forEach(([key, value]) => {
         searchParams.append(key, value);
       });
     }
@@ -16,10 +19,10 @@ export default class Api {
         searchParams.append(key, value);
       });
     }
-    return `${this._baseUrl}?${searchParams.toString()}`;
+    return `${this.baseUrl}?${searchParams.toString()}`;
   }
 
-  static _checkAnswerStatus(res) {
+  static checkAnswerStatus(res: Response) {
     if (res.ok) {
       const contentType = res.headers.get("content-type");
       if (contentType && contentType.includes("application/json")) {
