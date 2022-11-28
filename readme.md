@@ -1,10 +1,10 @@
-# Проект "Прогноз погоды"
-
-## Описание проекта
+# Прогноз погоды
 
 ![Coverage](https://github.com/Stern-Ritter/Weather-project/actions/workflows/coverage.yml/badge.svg)
 ![Sanity-check](https://github.com/Stern-Ritter/Weather-project/actions/workflows/sanity-check.yml/badge.svg)
 ![Deploy](https://github.com/Stern-Ritter/Weather-project/actions/workflows/deploy.yml/badge.svg)
+
+## Описание проекта
 
 Приложение показывает прогноз погоды в указанном городе, сохраняя 10 последних запросов пользователя.
 
@@ -65,6 +65,14 @@ export declare class Component<State = {}> {
 - обновление представления при изменении `state` через `setState`
 
 ### разработанный компонент к презентационной части проекта "Прогноз погоды".
+
+## Использованные технологии
+
+- TypeScript,
+- HTML,
+- CSS,
+- Google maps API,
+- Jest.
 
 **Github-pages**
 
